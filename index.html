@@ -1,101 +1,512 @@
-import React from 'react';
-import styles from './App.module.css';
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Витрина приложений | Поиск и фильтрация</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-function App() {
-  return (
-    <div className={styles.container}>
-      <h1 className={styles.mainTitle}>📱 Популярные приложения</h1>
-      
-      <div className={styles.cardsGrid}>
-        
-        {/* КАРТОЧКА 1 - YouTube */}
-        <div className={styles.card}>
-          <div className={styles.iconWrapper}>
-            <div className={`${styles.icon} ${styles.iconRed}`}>▶️</div>
-          </div>
-          <h2 className={styles.cardTitle}>YouTube</h2>
-          <p className={styles.description}>
-            Смотрите миллионы видео, подписывайтесь на любимых блогеров и создавайте свой контент.
-          </p>
-          <div className={styles.stats}>
-            <span>⭐ 4.6</span>
-            <span>📥 2B+</span>
-            <span>🔞 12+</span>
-          </div>
-          <button className={styles.button}>Установить</button>
-        </div>
+        body {
+            background: #f5f7fb;
+            font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            line-height: 1.4;
+            color: #1e293b;
+            padding: 2rem 1.5rem;
+        }
 
-        {/* КАРТОЧКА 2 - TikTok */}
-        <div className={styles.card}>
-          <div className={styles.iconWrapper}>
-            <div className={`${styles.icon} ${styles.iconDark}`}>🎵</div>
-          </div>
-          <h2 className={styles.cardTitle}>TikTok</h2>
-          <p className={styles.description}>
-            Короткие видео, тренды, музыка и творчество. Присоединяйтесь к миллиардам пользователей.
-          </p>
-          <div className={styles.stats}>
-            <span>⭐ 4.7</span>
-            <span>📥 1.5B+</span>
-            <span>🔞 12+</span>
-          </div>
-          <button className={styles.button}>Установить</button>
-        </div>
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
 
-        {/* КАРТОЧКА 3 - WhatsApp */}
-        <div className={styles.card}>
-          <div className={styles.iconWrapper}>
-            <div className={`${styles.icon} ${styles.iconGreen}`}>💬</div>
-          </div>
-          <h2 className={styles.cardTitle}>WhatsApp</h2>
-          <p className={styles.description}>
-            Простой и безопасный мессенджер с видеозвонками и групповыми чатами.
-          </p>
-          <div className={styles.stats}>
-            <span>⭐ 4.4</span>
-            <span>📥 3B+</span>
-            <span>🔞 7+</span>
-          </div>
-          <button className={styles.button}>Установить</button>
-        </div>
+        .header {
+            margin-bottom: 2rem;
+        }
 
-        {/* КАРТОЧКА 4 - Netflix */}
-        <div className={styles.card}>
-          <div className={styles.iconWrapper}>
-            <div className={`${styles.icon} ${styles.iconRed}`}>🎬</div>
-          </div>
-          <h2 className={styles.cardTitle}>Netflix</h2>
-          <p className={styles.description}>
-            Сериалы, фильмы и шоу в отличном качестве. Смотрите где угодно и когда угодно.
-          </p>
-          <div className={styles.stats}>
-            <span>⭐ 4.8</span>
-            <span>📥 500M+</span>
-            <span>🔞 16+</span>
-          </div>
-          <button className={styles.button}>Установить</button>
-        </div>
+        .badge {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            background: #eef2ff;
+            color: #1e40af;
+            padding: 0.3rem 0.8rem;
+            border-radius: 40px;
+            margin-bottom: 1rem;
+        }
 
-        {/* КАРТОЧКА 5 - Discord */}
-        <div className={styles.card}>
-          <div className={styles.iconWrapper}>
-            <div className={`${styles.icon} ${styles.iconPurple}`}>🎮</div>
-          </div>
-          <h2 className={styles.cardTitle}>Discord</h2>
-          <p className={styles.description}>
-            Общайтесь голосом, видео и текстом в сообществах геймеров и друзей.
-          </p>
-          <div className={styles.stats}>
-            <span>⭐ 4.9</span>
-            <span>📥 300M+</span>
-            <span>🔞 13+</span>
-          </div>
-          <button className={styles.button}>Установить</button>
-        </div>
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0f172a, #2d3a6e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.5rem;
+        }
 
-      </div>
+        .subtitle {
+            color: #475569;
+            font-size: 1rem;
+            border-left: 3px solid #818cf8;
+            padding-left: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Панель поиска и фильтрации */
+        .search-panel {
+            background: white;
+            border-radius: 28px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eef2ff;
+        }
+
+        .search-input-wrapper {
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            font-size: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 60px;
+            outline: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .search-input:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.3rem;
+            border: none;
+            background: #f1f5f9;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            color: #334155;
+        }
+
+        .filter-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .filter-btn.active {
+            background: #4f46e5;
+            color: white;
+        }
+
+        /* Сетка карточек */
+        .apps-grid {
+            display: grid;
+            gap: 1.75rem;
+            grid-template-columns: 1fr;
+            margin-bottom: 3rem;
+        }
+
+        .app-card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03), 0 2px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+            border: 1px solid #eef2ff;
+        }
+
+        .app-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.1);
+            border-color: #cbdffc;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .icon-name {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .app-icon {
+            width: 58px;
+            height: 58px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+            flex-shrink: 0;
+        }
+
+        .icon-bg-1 { background: linear-gradient(145deg, #f97316, #fed7aa); }
+        .icon-bg-2 { background: linear-gradient(145deg, #3b82f6, #bfdbfe); }
+        .icon-bg-3 { background: linear-gradient(145deg, #10b981, #a7f3d0); }
+        .icon-bg-4 { background: linear-gradient(145deg, #8b5cf6, #e9d5ff); }
+        .icon-bg-5 { background: linear-gradient(145deg, #ec489a, #fce7f3); }
+        .icon-bg-6 { background: linear-gradient(145deg, #06b6d4, #cffafe); }
+        .icon-bg-7 { background: linear-gradient(145deg, #f59e0b, #fef3c7); }
+        .icon-bg-8 { background: linear-gradient(145deg, #ef4444, #fee2e2); }
+
+        .title-group h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            color: #0f172a;
+        }
+
+        .category {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            background: #eef2ff;
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            color: #1e40af;
+            margin-top: 0.25rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #f8fafc;
+            padding: 0.3rem 0.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .star {
+            color: #fbbf24;
+            font-size: 1rem;
+        }
+
+        .rating-value {
+            color: #0f172a;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            line-height: 1.45;
+            color: #334155;
+            border-top: 1px solid #eef2ff;
+            padding-top: 0.7rem;
+            margin-top: 0.2rem;
+        }
+
+        /* Подсветка найденного текста */
+        .highlight {
+            background-color: #fef08a;
+            color: #1e293b;
+            border-radius: 4px;
+            padding: 0 2px;
+        }
+
+        /* Пустое состояние */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 32px;
+            border: 1px solid #eef2ff;
+        }
+
+        .empty-state span {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #64748b;
+        }
+
+        /* Скрытие карточек */
+        .app-card.hidden {
+            display: none;
+        }
+
+        @media (min-width: 640px) {
+            .apps-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            body {
+                padding: 2.5rem 2rem;
+            }
+            .apps-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.75rem;
+            }
+        }
+
+        .footer-note {
+            margin-top: 3rem;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 2rem;
+            text-align: center;
+            color: #5b6e8c;
+            font-size: 0.85rem;
+        }
+
+        .github-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #0f172a;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: background 0.2s;
+        }
+
+        .github-badge:hover {
+            background: #1e293b;
+        }
+
+        .info-hint {
+            margin-top: 1rem;
+            background: #f1f5f9;
+            border-radius: 24px;
+            padding: 0.75rem 1.2rem;
+            font-size: 0.8rem;
+            color: #334155;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="badge">🔍 с поиском и фильтрацией</div>
+        <h1>Витрина приложений</h1>
+        <div class="subtitle">поиск • фильтр по категориям • подсветка • debounce</div>
     </div>
-  );
-}
 
-export default App;
+    <!-- Панель поиска и фильтрации -->
+    <div class="search-panel">
+        <div class="search-input-wrapper">
+            <input type="text" id="searchInput" class="search-input" placeholder="Поиск приложений... например: дизайн, финансы, код..." autocomplete="off">
+        </div>
+        <div class="filter-buttons" id="filterButtons">
+            <button class="filter-btn active" data-category="all">Все</button>
+            <button class="filter-btn" data-category="Продуктивность">Продуктивность</button>
+            <button class="filter-btn" data-category="Дизайн">Дизайн</button>
+            <button class="filter-btn" data-category="Здоровье">Здоровье</button>
+            <button class="filter-btn" data-category="Путешествия">Путешествия</button>
+            <button class="filter-btn" data-category="Образование">Образование</button>
+            <button class="filter-btn" data-category="Финансы">Финансы</button>
+            <button class="filter-btn" data-category="Экология">Экология</button>
+            <button class="filter-btn" data-category="Кулинария">Кулинария</button>
+        </div>
+    </div>
+
+    <!-- Сетка карточек -->
+    <div class="apps-grid" id="appsGrid"></div>
+
+    <!-- Пустое состояние (изначально скрыто) -->
+    <div id="emptyState" class="empty-state" style="display: none;">
+        <span>🔍</span>
+        <h3>Ничего не найдено</h3>
+        <p>Попробуйте изменить поисковый запрос или выбрать другую категорию</p>
+    </div>
+
+    <div class="footer-note">
+        <div style="margin-bottom: 1rem;">
+            <span class="info-hint">✅ Поиск с debounce | Фильтр по категориям | Подсветка найденного | Пустое состояние</span>
+        </div>
+        <div>
+            <a href="https://github.com/your-username/app-showcase-search" class="github-badge" target="_blank">
+                📁 GitHub репозиторий
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Данные карточек (8 штук)
+    const cardsData = [
+        { name: "VoiceSnap", category: "Продуктивность", rating: 4.8, icon: "🎙️", iconBg: "icon-bg-1", description: "Мгновенные голосовые заметки с транскрибацией в текст. Идеально для идей на ходу и быстрых записей." },
+        { name: "ArtFlow Studio", category: "Дизайн", rating: 4.9, icon: "🎨", iconBg: "icon-bg-2", description: "Профессиональные кисти, слои и векторы. Создавайте иллюстрации и скетчи с натуральным откликом." },
+        { name: "FitMind Daily", category: "Здоровье", rating: 4.7, icon: "🧘", iconBg: "icon-bg-3", description: "Медитации, дыхательные техники и трекер настроения. Поддержка ментального благополучия каждый день." },
+        { name: "TravelEase", category: "Путешествия", rating: 4.6, icon: "✈️", iconBg: "icon-bg-4", description: "Маршруты, билеты, рекомендации локаций. Офлайн-карты и удобный трекер расходов в поездках." },
+        { name: "CodeBuddy Learn", category: "Образование", rating: 4.9, icon: "💻", iconBg: "icon-bg-5", description: "Интерактивные уроки Python, JavaScript и алгоритмов. Проекты и моментальная обратная связь." },
+        { name: "ReceiptKeeper", category: "Финансы", rating: 4.5, icon: "🧾", iconBg: "icon-bg-6", description: "Сканирование чеков, бюджеты и аналитика расходов. Безопасное облачное хранилище для финансов." },
+        { name: "GreenCycle", category: "Экология", rating: 4.8, icon: "🌱", iconBg: "icon-bg-7", description: "Карта пунктов переработки, эко-привычки и трекинг углеродного следа. Вдохновляйся на заботу о планете." },
+        { name: "ChefMate", category: "Кулинария", rating: 4.7, icon: "🍳", iconBg: "icon-bg-8", description: "Рецепты на основе продуктов дома, планировщик меню и списки покупок. Ежедневные кулинарные открытия." }
+    ];
+
+    // DOM элементы
+    const appsGrid = document.getElementById('appsGrid');
+    const searchInput = document.getElementById('searchInput');
+    const emptyStateDiv = document.getElementById('emptyState');
+    let currentCategory = 'all';
+    let currentSearchTerm = '';
+    let debounceTimer = null;
+
+    // Функция для подсветки текста
+    function highlightText(text, searchTerm) {
+        if (!searchTerm || searchTerm.trim() === '') {
+            return text;
+        }
+        const regex = new RegExp(`(${escapeRegex(searchTerm)})`, 'gi');
+        return text.replace(regex, '<mark class="highlight">$1</mark>');
+    }
+
+    // Экранирование спецсимволов для regex
+    function escapeRegex(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    // Проверка, соответствует ли карточка поисковому запросу
+    function matchesSearch(card, searchTerm) {
+        if (!searchTerm || searchTerm.trim() === '') return true;
+        const term = searchTerm.toLowerCase().trim();
+        return card.name.toLowerCase().includes(term) ||
+               card.category.toLowerCase().includes(term) ||
+               card.description.toLowerCase().includes(term);
+    }
+
+    // Рендер карточек с фильтрацией и подсветкой
+    function renderCards() {
+        let filteredCards = cardsData.filter(card => {
+            // Фильтр по категории
+            if (currentCategory !== 'all' && card.category !== currentCategory) {
+                return false;
+            }
+            // Фильтр по поиску
+            return matchesSearch(card, currentSearchTerm);
+        });
+
+        // Показываем/скрываем пустое состояние
+        if (filteredCards.length === 0) {
+            appsGrid.style.display = 'none';
+            emptyStateDiv.style.display = 'block';
+        } else {
+            appsGrid.style.display = 'grid';
+            emptyStateDiv.style.display = 'none';
+        }
+
+        // Отрисовка карточек
+        appsGrid.innerHTML = filteredCards.map(card => {
+            const highlightedName = highlightText(card.name, currentSearchTerm);
+            const highlightedDescription = highlightText(card.description, currentSearchTerm);
+            const highlightedCategory = highlightText(card.category, currentSearchTerm);
+            
+            return `
+                <div class="app-card">
+                    <div class="card-content">
+                        <div class="card-header">
+                            <div class="icon-name">
+                                <div class="app-icon ${card.iconBg}">
+                                    <span>${card.icon}</span>
+                                </div>
+                                <div class="title-group">
+                                    <h3>${highlightedName}</h3>
+                                    <div class="category">${highlightedCategory}</div>
+                                </div>
+                            </div>
+                            <div class="rating">
+                                <span class="star">★</span>
+                                <span class="rating-value">${card.rating}</span>
+                            </div>
+                        </div>
+                        <div class="description">${highlightedDescription}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Debounced поиск
+    function handleSearchInput() {
+        if (debounceTimer) clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            currentSearchTerm = searchInput.value;
+            renderCards();
+        }, 300); // 300ms debounce
+    }
+
+    // Обработчик фильтра
+    function handleCategoryClick(category) {
+        currentCategory = category;
+        // Обновляем активную кнопку
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            if (btn.dataset.category === category) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        renderCards();
+    }
+
+    // Инициализация
+    function init() {
+        renderCards();
+        
+        // Поиск с debounce
+        searchInput.addEventListener('input', handleSearchInput);
+        
+        // Фильтры
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                handleCategoryClick(btn.dataset.category);
+            });
+        });
+    }
+
+    init();
+</script>
+</body>
+</html>
